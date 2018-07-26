@@ -1,6 +1,10 @@
 FROM centos:7
 
-RUN INSTALL_PKGS="wget git" \
+# Setup docker package repo
+RUN yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+# Install packages
+RUN INSTALL_PKGS="wget git yum-utils device-mapper-persistent-data lvm2 docker-ce" \
   && yum -y update && yum -y install $INSTALL_PKGS && yum clean all -y
 
 # Install pip
@@ -18,3 +22,5 @@ RUN wget https://github.com/openshift/source-to-image/releases/download/v1.1.10/
  && mv s2i /usr/local/bin \
  && mv sti /usr/local/bin \
  && rm source-to-image-v1.1.10-27f0729d-linux-amd64.tar.gz
+
+# Install docker dependencies
